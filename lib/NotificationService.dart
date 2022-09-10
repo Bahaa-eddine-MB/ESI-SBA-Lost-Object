@@ -1,0 +1,108 @@
+import 'package:esi_sba_lost_object/User/ProfilePage.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
+
+class LocalNotificationService {
+  LocalNotificationService();
+  final _localNotificationService = FlutterLocalNotificationsPlugin();
+  final BehaviorSubject<String?> onNotificationClick = BehaviorSubject();
+  Future<void> initialize() async {
+    tz.initializeTimeZones();
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@drawable/ic_stat_logo');
+    IOSInitializationSettings iosInitializationSettings =
+        IOSInitializationSettings(
+            requestAlertPermission: true,
+            requestBadgePermission: true,
+            requestSoundPermission: true,
+            onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
+    final InitializationSettings settings = InitializationSettings(
+        android: androidInitializationSettings, iOS: iosInitializationSettings);
+    await _localNotificationService.initialize(
+      settings,
+      onSelectNotification: onSelectNotification,
+    );
+  }
+
+  Future<NotificationDetails> _notificationDetails() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+          'channelId',
+          'channelName',
+    
+      channelDescription: 'description',
+      importance: Importance.max,
+      priority: Priority.max,
+      playSound: true,
+      icon: '@drawable/ic_stat_logo',
+      //color: Colors.deepPurple,
+     // visibility: NotificationVisibility.public,
+    );
+    const IOSNotificationDetails iosNotificationDetails =
+        IOSNotificationDetails(
+
+        );
+    return const NotificationDetails(
+
+        android: androidNotificationDetails, iOS: iosNotificationDetails);
+  }
+
+  Future<void>showScheduledNotification({
+    required id,
+    required String title,
+    required String body,
+    required int seconds
+  })async{
+    final details = await _notificationDetails();
+   await _localNotificationService.zonedSchedule(id,
+    title,
+     body, 
+     tz.TZDateTime.from(DateTime.now().add(Duration(seconds: seconds)), tz.local)  ,  
+      details,
+     androidAllowWhileIdle: true,
+     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+     );
+  }
+    Future<void>showNotification({
+    required id,
+    required String title,
+    required String body,
+  })async{
+    final details = await _notificationDetails();
+   await _localNotificationService.show(id,
+    title,
+     body,  
+      details,
+     );
+  }
+
+      Future<void>showNotificationWithPayload({
+    required id,
+    required String title,
+    required String body,
+    required String payload
+  })async{
+    final details = await _notificationDetails();
+   await _localNotificationService.show(id,
+    title,
+     body,  
+      details,
+     );
+  }
+
+  void _onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {
+    print('id $id');
+  }
+
+  void onSelectNotification(String? payload) {
+    print('payload $payload');
+    Get.to(ProfilePage());
+    if(payload!=null && payload.isNotEmpty){
+      onNotificationClick.add(payload);
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024670677068",
+    "project_id": "esi-sba-lostobject",
+    "storage_bucket": "esi-sba-lostobject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024670677068:android:e8f68812367f8c69bb5ce9",
+        "android_client_info": {
+          "package_name": "com.example.esi_sba_lost_object"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024670677068-55gb898r2tsc2840q4cub01gn8q36cvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw1ufD6ujlbDNPnPPcOK7J_T6cbVW_Y9k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024670677068-55gb898r2tsc2840q4cub01gn8q36cvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
