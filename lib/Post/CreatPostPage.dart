@@ -501,7 +501,7 @@ class _CreatPostPageState extends State<CreatPostPage> {
                                       buttonColor: Colors.grey,
                                       barrierDismissible: false,
                                       radius: 50,
-                                      onConfirm: () async {   
+                                      onConfirm: () async {
                                         Get.back();
                                         Get.defaultDialog(
                                           confirm:
@@ -517,115 +517,112 @@ class _CreatPostPageState extends State<CreatPostPage> {
                                                 .hasConnection;
 
                                         if (hasconnection == true) {
-    var ref = await FirebaseFirestore
-                                            .instance
-                                            .collection("Posts")
-                                            .doc();
+                                          var ref = await FirebaseFirestore
+                                              .instance
+                                              .collection("Posts")
+                                              .doc();
 
-                                        if (img != null) {
-                                          await uploadFile();
-                                          await ref.set({
-                                            "id": ref.id,
-                                            "edited": false,
-                                            "owner": FirebaseAuth
-                                                .instance.currentUser?.uid,
-                                            "postType": value,
-                                            "picture": urlDownload,
-                                            "description": description,
-                                            "date": DateFormat(
-                                                    'yyyy-MM-dd hh:mm:ss')
-                                                .format(now)
-                                          });
-                                          Get.back();
+                                          if (img != null) {
+                                            await uploadFile();
+                                            await ref.set({
+                                              "id": ref.id,
+                                              "edited": false,
+                                              "owner": FirebaseAuth
+                                                  .instance.currentUser?.uid,
+                                              "postType": value,
+                                              "picture": urlDownload,
+                                              "description": description,
+                                              "date": DateFormat(
+                                                      'yyyy-MM-dd hh:mm:ss')
+                                                  .format(now)
+                                            });
+                                            Get.back();
 
-                                          await Get.dialog(
-                                            AlertDialog(
-                                              title: const Text('Post'),
-                                              content: const Text(
-                                                  'You have created a post successfully.'),
-                                              actions: [
-                                                TextButton(
-                                                  child: const Text("Okay"),
-                                                  onPressed: () {
-                                                    _clear();
-                                                    cont = "";
-                                                    Get.back();
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                          Get.to(HomePage());
-                                        }
-                                        if (img == null) {
-                                          await ref.set({
-                                            "id": ref.id,
-                                            "edited": false,
-                                            "owner": FirebaseAuth
-                                                .instance.currentUser?.uid,
-                                            "postType": value,
-                                            "picture": "",
-                                            "description": description,
-                                            "date": DateFormat(
-                                                    'yyyy-MM-dd hh:mm:ss')
-                                                .format(now),
-                                          });
-                                          snapshot.data!.docs
-                                              .forEach((element) {
-                                            if (element["notification"] ==
-                                                true) {
-                                              sendPushMessage(
-                                                  element['token'],
-                                                  "$value : $description",
-                                                  "$firstname $lastname has created a post");
-                                            }
-                                          });
-
-                                          Get.back();
-
-                                          await Get.dialog(
-                                            AlertDialog(
-                                              title: const Text('Post'),
-                                              content: const Text(
-                                                  'You have created a post successfully.'),
-                                              actions: [
-                                                TextButton(
-                                                  child: const Text("Okay"),
-                                                  onPressed: () {
-                                                    _clear();
-                                                    cont = "";
-                                                    Navigator.pop(context);
-
-                                                    Get.to(HomePage());
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                          Get.to(HomePage());
-                                        }
-                                        }else{
-                                                  Get.back();
-                                            Get.snackbar(
-                                              "Error",
-                                              "No internet connection.",
-                                              icon: const Icon(
-                                                  Icons.portable_wifi_off,
-                                                  color: Colors.white),
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM,
-                                              backgroundColor: Colors.red,
-                                              borderRadius: 20,
-                                              margin: const EdgeInsets.all(15),
-                                              colorText: Colors.white,
-                                              duration:
-                                                  const Duration(seconds: 4),
-                                              forwardAnimationCurve:
-                                                  Curves.easeOutBack,
+                                            await Get.dialog(
+                                              AlertDialog(
+                                                title: const Text('Post'),
+                                                content: const Text(
+                                                    'You have created a post successfully.'),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("Okay"),
+                                                    onPressed: () {
+                                                      _clear();
+                                                      cont = "";
+                                                      Get.to(HomePage());
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
                                             );
+                                            _clear();
+                                            Get.to(HomePage());
+                                          }
+                                          if (img == null) {
+                                            await ref.set({
+                                              "id": ref.id,
+                                              "edited": false,
+                                              "owner": FirebaseAuth
+                                                  .instance.currentUser?.uid,
+                                              "postType": value,
+                                              "picture": "",
+                                              "description": description,
+                                              "date": DateFormat(
+                                                      'yyyy-MM-dd hh:mm:ss')
+                                                  .format(now),
+                                            });
+                                            snapshot.data!.docs
+                                                .forEach((element) {
+                                              if (element["notification"] ==
+                                                  true) {
+                                                sendPushMessage(
+                                                    element['token'],
+                                                    "$value : $description",
+                                                    "$firstname $lastname has created a post");
+                                              }
+                                            });
+
+                                            Get.back();
+
+                                            await Get.dialog(
+                                              AlertDialog(
+                                                title: const Text('Post'),
+                                                content: const Text(
+                                                    'You have created a post successfully.'),
+                                                actions: [
+                                                  TextButton(
+                                                    child: const Text("Okay"),
+                                                    onPressed: () {
+                                                      _clear();
+                                                      cont = "";
+                                                      Get.to(HomePage());
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                            _clear();
+                                            Get.to(HomePage());
+                                          }
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar(
+                                            "Error",
+                                            "No internet connection.",
+                                            icon: const Icon(
+                                                Icons.portable_wifi_off,
+                                                color: Colors.white),
+                                            snackPosition: SnackPosition.BOTTOM,
+                                            backgroundColor: Colors.red,
+                                            borderRadius: 20,
+                                            margin: const EdgeInsets.all(15),
+                                            colorText: Colors.white,
+                                            duration:
+                                                const Duration(seconds: 4),
+                                            forwardAnimationCurve:
+                                                Curves.easeOutBack,
+                                          );
                                         }
-                                     
-                                    
                                       });
                                 } else if (value == null) {
                                   Get.dialog(
